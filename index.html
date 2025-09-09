@@ -19,7 +19,6 @@
       <p class="mt-2 text-neutral-400 text-sm">software engineer · writer · researcher</p>
       <p class="mt-2 text-neutral-400 text-sm">mathematics · machine learning · web performance</p>
 
-      <!-- NEW: small presentation paragraph -->
       <p class="mt-6 text-neutral-300 leading-relaxed">
         I write about practical mathematics for machine learning, clean implementations,
         and performance-minded engineering. This is a quiet place for notes, derivations,
@@ -32,11 +31,7 @@
     <!-- Title row + compact toolbar -->
     <section class="mb-3 flex items-center justify-between gap-4">
       <h2 class="text-2xl font-semibold">writings</h2>
-
-      <!-- results count -->
       <span id="count" class="text-xs bg-neutral-900 border border-neutral-800 rounded px-2 py-1 tabular-nums">0</span>
-
-      <!-- mobile filters toggle -->
       <button id="toggleFilters"
               class="sm:hidden border border-neutral-700 rounded px-3 py-1.5 text-sm hover:bg-neutral-900"
               aria-expanded="false" aria-controls="filters">
@@ -44,7 +39,7 @@
       </button>
     </section>
 
-    <!-- Filters (improved UX) -->
+    <!-- Filters -->
     <section id="filters"
              class="mb-6 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3 sm:items-end sm:grid-cols-[1fr_1fr] lg:grid-cols-[1fr_1fr_auto_auto_auto]">
       <label class="block">
@@ -100,160 +95,7 @@
     const $ = id => document.getElementById(id);
     const state = { posts: [] };
 
-    // --- helpers ---
-    const debounce = (fn, ms=200) => {
-      let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a), ms); };
-    };
-
-    // Parse front-matter: returns {meta, body}
-    function parseFrontMatter(text) {
-      if (text.startsWith('---')) {
-        const end = text.indexOf('\n---', 3);
-        if (end !== -1) {
-          const fm = text.slice(3, end).trim();
-          const body = text.slice(end + 4).replace(/^\s*\n/, '');
-          let meta = {};
-          try { meta = jsyaml.load(fm) || {}; } catch(e) {}
-          return { meta, body };
-        }
-      }
-      return { meta: {}, body: text };
-    }
-
-    function renderList(items) {
-      const ul = $('list');
-      ul.innerHTML = '';
-      for (const p of items) {
-        const li = document.createElement('li');
-        li.className = "flex items-start gap-4";
-        const d = new Date(p.date).toISOString().slice(0,10);
-        li.innerHTML = `
-          <span class="w-28 shrink-0 text-neutral-400 tabular-nums">${d}</span>
-          <a class="flex-1 link-underline hover:text-white" href="post.html?file=${encodeURIComponent(p.file)}">${p.title}</a>
-          <div class="flex gap-1 shrink-0">
-            ${p.tags.map(t => `<button data-tag="${t}" class="text-xs px-2 py-0.5 rounded bg-neutral-900 border border-neutral-800 hover:border-neutral-700">${t}</button>`).join('')}
-          </div>
-        `;
-        li.addEventListener('click', (e)=>{
-          const t = e.target.getAttribute?.('data-tag');
-          if (t) { $('tag').value = t; applyFilters(); e.preventDefault(); }
-        });
-        ul.appendChild(li);
-      }
-      $('count').textContent = items.length;
-    }
-
-    function populateTagFilter(posts) {
-      const set = new Set();
-      posts.forEach(p => p.tags.forEach(t => set.add(t)));
-      $('tag').innerHTML = `<option value="">All tags</option>` + [...set].sort().map(t => `<option value="${t}">${t}</option>`).join('');
-    }
-
-    function renderChips() {
-      const chips = $('chips');
-      const q = $('q').value.trim();
-      const tag = $('tag').value;
-      const from = $('from').value;
-      const to = $('to').value;
-      const sort = $('sort').value;
-
-      const pieces = [];
-      if (q) pieces.push({k:'q',label:`search: ${q}`});
-      if (tag) pieces.push({k:'tag',label:`tag: ${tag}`});
-      if (from) pieces.push({k:'from',label:`from: ${from}`});
-      if (to) pieces.push({k:'to',label:`to: ${to}`});
-      if (sort !== 'desc') pieces.push({k:'sort',label:`sort: ${sort}`});
-
-      chips.innerHTML = pieces.map(p =>
-        `<button data-k="${p.k}" class="text-xs px-2 py-1 rounded bg-neutral-900 border border-neutral-800 hover:border-neutral-700">
-           ${p.label} <span aria-hidden="true">×</span>
-         </button>`).join('');
-
-      chips.querySelectorAll('button').forEach(btn=>{
-        btn.addEventListener('click', ()=>{
-          const k = btn.getAttribute('data-k');
-          if (k==='q') $('q').value='';
-          if (k==='tag') $('tag').value='';
-          if (k==='from') $('from').value='';
-          if (k==='to') $('to').value='';
-          if (k==='sort') $('sort').value='desc';
-          applyFilters();
-        });
-      });
-    }
-
-    function applyFilters() {
-      const q = $('q').value.toLowerCase().trim();
-      const tag = $('tag').value;
-      const from = $('from').value ? new Date($('from').value) : null;
-      const to = $('to').value ? new Date($('to').value) : null;
-      const sort = $('sort').value;
-
-      let items = state.posts.filter(p => {
-        const textMatch = !q || p.title.toLowerCase().includes(q) || p.tags.join(' ').toLowerCase().includes(q);
-        const tagMatch = !tag || p.tags.includes(tag);
-        const d = new Date(p.date);
-        const after = !from || d >= from;
-        const before = !to || d <= to;
-        return textMatch && tagMatch && after && before;
-      });
-
-      if (sort === 'asc') items.sort((a,b)=> new Date(a.date)-new Date(b.date));
-      else if (sort === 'desc') items.sort((a,b)=> new Date(b.date)-new Date(a.date));
-      else if (sort === 'title') items.sort((a,b)=> a.title.localeCompare(b.title));
-
-      renderChips();
-      renderList(items);
-    }
-
-    async function loadPosts() {
-      const manifest = await fetch('posts/_manifest.json').then(r=>r.json());
-      const files = manifest.posts || [];
-      const fetched = await Promise.all(files.map(async file => {
-        const text = await fetch('posts/' + file + '?cache=' + Date.now()).then(r=>r.text());
-        const { meta } = parseFrontMatter(text);
-        return {
-          file,
-          title: meta.title || file.replace('.md',''),
-          date: meta.date || new Date().toISOString().slice(0,10),
-          tags: Array.isArray(meta.tags) ? meta.tags : (meta.tags ? String(meta.tags).split(',').map(s=>s.trim()) : []),
-          description: meta.description || ''
-        };
-      }));
-      fetched.sort((a,b)=> new Date(b.date)-new Date(a.date));
-      state.posts = fetched;
-      populateTagFilter(fetched);
-      applyFilters();
-    }
-
-    // wiring
-    const onInput = debounce(applyFilters, 180);
-    ['q','tag','from','to','sort'].forEach(id => $(id).addEventListener('input', onInput));
-    $('clear').addEventListener('click', ()=>{ $('q').value=''; $('tag').value=''; $('from').value=''; $('to').value=''; $('sort').value='desc'; applyFilters(); });
-    $('y').textContent = new Date().getFullYear();
-
-    // mobile toggle
-    (function(){
-      const btn = $('toggleFilters');
-      const panel = $('filters');
-      const update = () => {
-        if (window.matchMedia('(min-width: 640px)').matches) {
-          panel.classList.remove('hidden');
-          btn.setAttribute('aria-expanded','true');
-        } else {
-          panel.classList.add('hidden');
-          btn.setAttribute('aria-expanded','false');
-        }
-      };
-      update();
-      window.addEventListener('resize', update);
-      btn.addEventListener('click', ()=>{
-        const hidden = panel.classList.toggle('hidden');
-        btn.setAttribute('aria-expanded', String(!hidden));
-      });
-    })();
-
-    loadPosts();
-  </script>
-</body>
-</html>
+    // 🔒 Hardcoded post files (relative to /posts/)
+    const FILES = [
+      "2025-05-03-logistic-regression.md",
+... (173 righe a disposizione)
