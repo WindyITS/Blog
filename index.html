@@ -30,59 +30,64 @@
     </header>
 
     <!-- Title row + compact toolbar -->
-    <section class="mb-3 flex items-center justify-between gap-4">
-      <h2 class="text-2xl font-semibold">writings</h2>
+<section class="mb-3 flex items-center justify-between gap-4">
+  <h2 class="text-2xl font-semibold">writings</h2>
 
-      <!-- results count -->
-      <span id="count" class="text-xs bg-neutral-900 border border-neutral-800 rounded px-2 py-1 tabular-nums">0</span>
+  <!-- results count -->
+  <span id="count" class="text-xs bg-neutral-900 border border-neutral-800 rounded px-2 py-1 tabular-nums">0</span>
 
-      <!-- mobile filters toggle -->
-      <button id="toggleFilters"
-              class="sm:hidden border border-neutral-700 rounded px-3 py-1.5 text-sm hover:bg-neutral-900"
-              aria-expanded="false" aria-controls="filters">
-        Filters
-      </button>
-    </section>
+  <!-- mobile filters toggle -->
+  <button id="toggleFilters"
+          class="sm:hidden border border-neutral-700 rounded px-3 py-1.5 text-sm hover:bg-neutral-900"
+          aria-expanded="false" aria-controls="filters">
+    Filters
+  </button>
+</section>
 
-    <!-- Filters (improved UX) -->
-    <section id="filters"
-             class="mb-6 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3 sm:items-end sm:grid-cols-[1fr_1fr] lg:grid-cols-[1fr_1fr_auto_auto_auto]">
-      <label class="block">
-        <span class="sr-only">Search</span>
-        <input id="q" type="search" placeholder="Search title or tag…"
-          class="w-full bg-neutral-950 border border-neutral-800 rounded px-3 py-2 focus:outline-none focus:ring-1 focus:ring-neutral-600" />
-      </label>
+<!-- Filters (improved UX) -->
+<section id="filters"
+         class="mb-6 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3 sm:items-end sm:grid-cols-[1fr_1fr] lg:grid-cols-[1fr_1fr_auto_auto_auto]">
+  <label class="block">
+    <span class="sr-only">Search</span>
+    <input id="q" type="search" placeholder="Search title or tag…"
+      class="w-full h-10 text-base bg-neutral-950 border border-neutral-800 rounded px-3 focus:outline-none focus:ring-1 focus:ring-neutral-600" />
+  </label>
 
-      <label class="block">
-        <span class="sr-only">Tag</span>
-        <select id="tag" class="w-full bg-neutral-950 border border-neutral-800 rounded px-3 py-2">
-          <option value="">All tags</option>
-        </select>
-      </label>
+  <label class="block">
+    <span class="sr-only">Tag</span>
+    <select id="tag"
+      class="w-full h-10 text-base bg-neutral-950 border border-neutral-800 rounded px-3 focus:outline-none focus:ring-1 focus:ring-neutral-600">
+      <option value="">All tags</option>
+    </select>
+  </label>
 
-      <label class="block">
-        <span class="sr-only">From date</span>
-        <input id="from" type="date" class="w-full bg-neutral-950 border border-neutral-800 rounded px-3 py-2" />
-      </label>
+  <label class="block">
+    <span class="sr-only">From date</span>
+    <input id="from" type="date"
+      class="w-full h-10 text-base bg-neutral-950 border border-neutral-800 rounded px-3 focus:outline-none focus:ring-1 focus:ring-neutral-600" />
+  </label>
 
-      <label class="block">
-        <span class="sr-only">To date</span>
-        <input id="to" type="date" class="w-full bg-neutral-950 border border-neutral-800 rounded px-3 py-2" />
-      </label>
+  <label class="block">
+    <span class="sr-only">To date</span>
+    <input id="to" type="date"
+      class="w-full h-10 text-base bg-neutral-950 border border-neutral-800 rounded px-3 focus:outline-none focus:ring-1 focus:ring-neutral-600" />
+  </label>
 
-      <label class="block">
-        <span class="sr-only">Sort</span>
-        <select id="sort" class="w-full bg-neutral-950 border border-neutral-800 rounded px-3 py-2">
-          <option value="desc">Newest</option>
-          <option value="asc">Oldest</option>
-          <option value="title">Title A–Z</option>
-        </select>
-      </label>
+  <label class="block">
+    <span class="sr-only">Sort</span>
+    <select id="sort"
+      class="w-full h-10 text-base bg-neutral-950 border border-neutral-800 rounded px-3 focus:outline-none focus:ring-1 focus:ring-neutral-600">
+      <option value="desc">Newest</option>
+      <option value="asc">Oldest</option>
+      <option value="title">Title A–Z</option>
+    </select>
+  </label>
 
-      <div class="flex gap-2 sm:col-span-2 lg:col-span-1">
-        <button id="clear" class="flex-1 border border-neutral-700 rounded px-3 py-2 hover:bg-neutral-900">Clear</button>
-      </div>
-    </section>
+  <div class="flex gap-2 sm:col-span-2 lg:col-span-1">
+    <button id="clear"
+      class="flex-1 h-10 text-base border border-neutral-700 rounded px-3 hover:bg-neutral-900">Clear</button>
+  </div>
+</section>
 
     <!-- Active filter chips -->
     <div id="chips" class="mb-6 flex flex-wrap gap-2"></div>
@@ -257,3 +262,4 @@
   </script>
 </body>
 </html>
+
