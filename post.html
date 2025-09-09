@@ -98,3 +98,26 @@
 
       const d = meta.date ? new Date(meta.date) : new Date();
       document.getElementById('date').textContent = d.toISOString().slice(0,10);
+
+      const tags = Array.isArray(meta.tags) ? meta.tags
+        : (meta.tags ? String(meta.tags).split(',').map(s => s.trim()) : []);
+      document.getElementById('tags').innerHTML = (tags.length ? tags : ['untagged'])
+        .map(t => ⁠ <span class="text-xs px-2 py-0.5 rounded bg-neutral-900 border border-neutral-800">${t}</span> ⁠)
+        .join(' ');
+
+      // Inject parsed Markdown
+      contentEl.innerHTML = marked.parse(body);
+
+      // Run MathJax on the injected HTML
+      if (window.MathJax && MathJax.startup && MathJax.typesetPromise) {
+        // Ensure MathJax is ready, then typeset only our container
+        MathJax.startup.promise.then(() => MathJax.typesetPromise([contentEl]));
+      }
+
+      document.getElementById('y').textContent = new Date().getFullYear();
+    }
+
+    init();
+  </script>
+</body>
+</html>
