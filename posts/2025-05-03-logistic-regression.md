@@ -7,10 +7,10 @@ description: A crisp derivation + a clean implementation.
 
 # Logistic Regression
 
-**Micheal è un ricchione potentissimo**
 
 $X$
 
 $$X$$
+
 
 
