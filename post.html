@@ -4,9 +4,32 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Post</title>
+
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Markdown + YAML -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/js-yaml@4/dist/js-yaml.min.js"></script>
+
+  <!-- MathJax (configure BEFORE loading the script) -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$','$$'], ['\\[','\\]']]
+      },
+      options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] },
+      // We'll typeset manually after injecting Markdown
+      startup: { typeset: false }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+  <style>
+    /* Optional: make long equations scroll horizontally instead of overflowing */
+    mjx-container { overflow-x: auto; overflow-y: hidden; }
+  </style>
 </head>
 <body class="bg-black text-neutral-200 antialiased">
   <main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -30,6 +53,14 @@
   </main>
 
   <script>
+    // --- Marked config (optional but recommended so TeX isn't "smart-quoted") ---
+    marked.setOptions({
+      gfm: true,
+      breaks: false,
+      smartypants: false
+    });
+
+    // --- Front matter parser ---
     function parseFrontMatter(text) {
       if (text.startsWith('---')) {
         const end = text.indexOf('\n---', 3);
@@ -48,20 +79,22 @@
 
     async function init() {
       const file = qs('file');
-      if (!file) { document.getElementById('content').textContent = 'Missing ?file=...'; return; }
-      const raw = await fetch('posts/' + file).then(r=>r.text());
+      const contentEl = document.getElementById('content');
+
+      if (!file) {
+        contentEl.textContent = 'Missing ?file=...';
+        return;
+      }
+
+      const raw = await fetch('posts/' + file).then(r => {
+        if (!r.ok) throw new Error('Failed to load post: ' + r.status);
+        return r.text();
+      });
+
       const { meta, body } = parseFrontMatter(raw);
+
       document.title = meta.title || 'Post';
       document.getElementById('title').textContent = meta.title || file.replace('.md','');
+
       const d = meta.date ? new Date(meta.date) : new Date();
       document.getElementById('date').textContent = d.toISOString().slice(0,10);
-      const tags = Array.isArray(meta.tags) ? meta.tags : (meta.tags ? String(meta.tags).split(',').map(s=>s.trim()) : []);
-      document.getElementById('tags').innerHTML = (tags.length ? tags : ['untagged'])
-        .map(t=>`<span class="text-xs px-2 py-0.5 rounded bg-neutral-900 border border-neutral-800">${t}</span>`).join(' ');
-      document.getElementById('content').innerHTML = marked.parse(body);
-      document.getElementById('y').textContent = new Date().getFullYear();
-    }
-    init();
-  </script>
-</body>
-</html>
