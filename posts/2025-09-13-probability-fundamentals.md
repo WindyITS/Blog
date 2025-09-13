@@ -5,6 +5,7 @@ tags: [statistics, notes]
 description: 
 ---
 
+# Ciao
 
 Probability is a branch of mathematics that is used to deal with *uncertainty*, so that we can understand and have information about the possible outcomes of an *experiment*.
 
