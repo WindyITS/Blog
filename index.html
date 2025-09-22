@@ -45,35 +45,39 @@
       </button>
     </section>
 
-    <!-- Filters (improved UX) -->
+    <!-- Filters (fixed & uniform dimensions) -->
     <section id="filters"
-             class="mb-6 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3 sm:items-end sm:grid-cols-[1fr_1fr] lg:grid-cols-[1fr_1fr_auto_auto_auto]">
+            class="mb-6 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:items-end sm:grid-cols-[1fr_1fr] lg:grid-cols-[1fr_1fr_auto_auto_auto]">
       <label class="block">
         <span class="sr-only">Search</span>
         <input id="q" type="search" placeholder="Search title or tag…"
-          class="w-full bg-neutral-950 border border-neutral-800 rounded px-3 py-2 focus:outline-none focus:ring-1 focus:ring-neutral-600" />
+          class="w-full h-10 bg-neutral-950 border border-neutral-800 rounded px-3 focus:outline-none focus:ring-1 focus:ring-neutral-600" />
       </label>
 
       <label class="block">
         <span class="sr-only">Tag</span>
-        <select id="tag" class="w-full bg-neutral-950 border border-neutral-800 rounded px-3 py-2">
+        <select id="tag" 
+          class="w-full h-10 bg-neutral-950 border border-neutral-800 rounded px-3">
           <option value="">All tags</option>
         </select>
       </label>
 
       <label class="block">
         <span class="sr-only">From date</span>
-        <input id="from" type="date" class="w-full bg-neutral-950 border border-neutral-800 rounded px-3 py-2" />
+        <input id="from" type="date" 
+          class="w-full h-10 bg-neutral-950 border border-neutral-800 rounded px-3" />
       </label>
 
       <label class="block">
         <span class="sr-only">To date</span>
-        <input id="to" type="date" class="w-full bg-neutral-950 border border-neutral-800 rounded px-3 py-2" />
+        <input id="to" type="date" 
+          class="w-full h-10 bg-neutral-950 border border-neutral-800 rounded px-3" />
       </label>
 
       <label class="block">
         <span class="sr-only">Sort</span>
-        <select id="sort" class="w-full bg-neutral-950 border border-neutral-800 rounded px-3 py-2">
+        <select id="sort" 
+          class="w-full h-10 bg-neutral-950 border border-neutral-800 rounded px-3">
           <option value="desc">Newest</option>
           <option value="asc">Oldest</option>
           <option value="title">Title A–Z</option>
@@ -81,9 +85,13 @@
       </label>
 
       <div class="flex gap-2 sm:col-span-2 lg:col-span-1">
-        <button id="clear" class="flex-1 border border-neutral-700 rounded px-3 py-2 hover:bg-neutral-900">Clear</button>
+        <button id="clear" 
+          class="w-full h-10 border border-neutral-700 rounded px-3 hover:bg-neutral-900">
+          Clear
+        </button>
       </div>
     </section>
+
 
     <!-- Active filter chips -->
     <div id="chips" class="mb-6 flex flex-wrap gap-2"></div>
