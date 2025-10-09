@@ -1,6 +1,6 @@
 ---
-tags: [statistics, python]
-created: 2025-10-09
+tags: 
+date: 2025-10-09
 ---
 
 The big question: can we use regression causal inference? The answer is yes, but is not that simple. The idea is that we would like to interpret the parameters of our regression as *causal effects* of the regressor over the dependent variable $Y$, but how do we identify those parameters that, in regression terms, only catch correlation and not causality? 
