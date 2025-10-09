@@ -1,7 +1,11 @@
+
 {
-    "posts": [
-        "2025-07-05-rnn-from-scratch.md",
-        "causality-and-regression.md",
-    ]
-  }
+  "posts": [
+    "Econometrics for Big Data.md",
+    "Regressions fundamentals.md",
+    "Mean Regression.md",
+    "POF - Potential Outcomes Framework.md",
+    "Hypotheses testing.md"
+  ]
+}
   
