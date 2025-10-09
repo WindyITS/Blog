@@ -9,9 +9,11 @@ Here the POF comes in help, because just the regression is not enough: correlati
 
 ## The link between POF and Regression
 To link POF and regression we can use the following trick: we can express the causal framework with a regression-like format, suggesting that we can adapt it to serve as the regression that we need:
+
 $$
 Y_{i} (D)= E[Y_{i}(D) + U_{i}(D)
 $$
+
 This is exactly a regression: *the value of the dependent variable for the i-th unit and for a certain value of $D$ depends on the average outcome with respect to that $D$ plus an error given by the individual properties of the i-th unit*.
 Also, notice: 
 $$
