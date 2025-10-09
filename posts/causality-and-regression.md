@@ -1,5 +1,5 @@
 ---
-title: Econometrics for Big Data
+title: Causality and Regression
 date: 2024-10-09
 tags: [econometrics, statistics, big data]
 description: An overview of econometric methods for large datasets.
