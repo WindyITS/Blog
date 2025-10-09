@@ -1,11 +1,7 @@
 
 {
   "posts": [
-    "Econometrics for Big Data.md",
-    "Regressions fundamentals.md",
-    "Mean Regression.md",
-    "POF - Potential Outcomes Framework.md",
-    "Hypotheses testing.md"
+    "causality-and-regression.md",
   ]
 }
   
